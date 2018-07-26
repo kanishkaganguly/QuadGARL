@@ -1,0 +1,3 @@
+[submodule "Quadcopter_simulator"]
+	path = Quadcopter_simulator
+	url = https://github.com/abhijitmajumdar/Quadcopter_simulator.git
