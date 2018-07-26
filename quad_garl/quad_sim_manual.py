@@ -1,7 +1,15 @@
+#!/usr/bin/env python3
 import signal
 import sys
 
+sys.path.append("../")
 from quad_garl import controller_manual, gui, quadcopter
+
+# Constants
+TIME_SCALING = 1.0
+QUAD_DYNAMICS_UPDATE = 0.002  # seconds
+CONTROLLER_DYNAMICS_UPDATE = 0.005  # seconds
+run = True
 
 
 # Catch Ctrl+C to stop threads
@@ -13,12 +21,6 @@ def signal_handler(signal, frame):
 
 
 signal.signal(signal.SIGINT, signal_handler)
-
-# Constants
-TIME_SCALING = 1.0
-QUAD_DYNAMICS_UPDATE = 0.002  # seconds
-CONTROLLER_DYNAMICS_UPDATE = 0.005  # seconds
-run = True
 
 # Define the quadcopters
 QUADCOPTER = {
@@ -41,6 +43,6 @@ while (run == True):
     ctrl.update_throttle(throttle=throttle)
     gui_object.quads['q1']['position'] = quad.get_position('q1')
     gui_object.quads['q1']['orientation'] = quad.get_orientation('q1')
-    gui_object.update()
+    # gui_object.update()
 quad.stop_thread()
 ctrl.stop_thread()

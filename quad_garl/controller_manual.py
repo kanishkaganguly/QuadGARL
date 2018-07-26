@@ -4,7 +4,7 @@ import time
 import numpy as np
 
 
-class ManualController():
+class ManualController:
     def __init__(self, get_state, get_time, actuate_motors, quad_identifier):
         self.get_state = get_state
         self.quad_identifier = quad_identifier
