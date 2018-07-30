@@ -10,6 +10,7 @@ class ManualController:
         self.quad_identifier = quad_identifier
         self.actuate_motors = actuate_motors
         self.get_time = get_time
+        self.time = 0
         self.thread_object = None
         self.target = [0, 0, 0]
         self.yaw_target = 0.0
@@ -23,16 +24,12 @@ class ManualController:
     def update(self):
         [dest_x, dest_y, dest_z] = self.target
         [x, y, z] = self.get_state(self.quad_identifier)
-        x_error = dest_x - x
-        y_error = dest_y - y
-        z_error = dest_z - z
         m1 = self.throttle[0]
         m2 = self.throttle[1]
         m3 = self.throttle[2]
         m4 = self.throttle[3]
-        M = np.clip([m1, m2, m3, m4], self.MOTOR_LIMITS[0], self.MOTOR_LIMITS[1])
-        print(M)
-        self.actuate_motors(self.quad_identifier, M)
+        m = np.clip([m1, m2, m3, m4], self.MOTOR_LIMITS[0], self.MOTOR_LIMITS[1])
+        self.actuate_motors(self.quad_identifier, m)
 
     def update_throttle(self, throttle):
         self.throttle = throttle
@@ -46,7 +43,7 @@ class ManualController:
     def thread_run(self, update_rate, time_scaling):
         update_rate = update_rate * time_scaling
         last_update = self.get_time()
-        while (self.run == True):
+        while self.run:
             time.sleep(0)
             self.time = self.get_time()
             if (self.time - last_update).total_seconds() > update_rate:
