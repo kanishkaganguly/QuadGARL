@@ -5,7 +5,10 @@ import torch
 
 
 class ReinforcementLearning:
-    def __init__(self):
+    def __init__(self, log):
+        # Logging
+        self.log = log
+
         self.batch_size = 1
         self.I_size = 6  # type: int
         self.H_1 = 10  # type: int
