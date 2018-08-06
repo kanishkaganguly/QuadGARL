@@ -33,13 +33,13 @@ class GUI():
     def update(self):
         print("GUI UPDATE")
         for key in self.quads:
-            R = rotation_matrix(self.quads[key]['orientation'])
+            R = rotation_matrix(self.quads[key]['state'][6:9])
             L = self.quads[key]['L']
             points = np.array([[-L, 0, 0], [L, 0, 0], [0, -L, 0], [0, L, 0], [0, 0, 0], [0, 0, 0]]).T
             points = np.dot(R, points)
-            points[0, :] += self.quads[key]['position'][0]
-            points[1, :] += self.quads[key]['position'][1]
-            points[2, :] += self.quads[key]['position'][2]
+            points[0, :] += self.quads[key]['state'][0]
+            points[1, :] += self.quads[key]['state'][1]
+            points[2, :] += self.quads[key]['state'][2]
             self.quads[key]['l1'].set_data(points[0, 0:2], points[1, 0:2])
             self.quads[key]['l1'].set_3d_properties(points[2, 0:2])
             self.quads[key]['l2'].set_data(points[0, 2:4], points[1, 2:4])

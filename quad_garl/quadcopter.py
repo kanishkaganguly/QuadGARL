@@ -1,4 +1,3 @@
-import datetime
 import math
 
 import numpy as np
@@ -33,9 +32,7 @@ class Quadcopter:
         self.b = b
         self.dt = dt
         self.time_scaling = time_scaling
-        self.thread_object = None
         self.ode = scipy.integrate.ode(self.state_dot).set_integrator('vode', nsteps=500, method='bdf')
-        self.time = datetime.datetime.now()
         for key in self.quads:
             self.quads[key]['state'] = np.zeros(12)
             self.quads[key]['state'][0:3] = self.quads[key]['position']
@@ -77,9 +74,9 @@ class Quadcopter:
         # The angular accelerations
         omega = self.quads[key]['state'][9:12]
         tau = np.array([self.quads[key]['L'] * (self.quads[key]['m1'].thrust - self.quads[key]['m3'].thrust),
-                        self.quads[key]['L'] * (self.quads[key]['m2'].thrust - self.quads[key]['m4'].thrust), self.b * (
-                                self.quads[key]['m1'].thrust - self.quads[key]['m2'].thrust +
-                                self.quads[key]['m3'].thrust - self.quads[key]['m4'].thrust)])
+                        self.quads[key]['L'] * (self.quads[key]['m2'].thrust - self.quads[key]['m4'].thrust),
+                        self.b * (self.quads[key]['m1'].thrust - self.quads[key]['m2'].thrust +
+                                  self.quads[key]['m3'].thrust - self.quads[key]['m4'].thrust)])
         omega_dot = np.dot(self.quads[key]['invI'], (tau - np.cross(omega, np.dot(self.quads[key]['I'], omega))))
         state_dot[9] = omega_dot[0]
         state_dot[10] = omega_dot[1]
@@ -121,6 +118,3 @@ class Quadcopter:
 
     def set_orientation(self, quad_name, orientation):
         self.quads[quad_name]['state'][6:9] = orientation
-
-    def get_time(self):
-        return self.time

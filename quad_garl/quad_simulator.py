@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 import signal
 import sys
-import time
 from typing import List
 
 import numpy as np
@@ -42,9 +41,7 @@ class Quadcopter:
         self.log.info("Create objects for quad, gui and controller")
         self.gui = gui.GUI(quads=self.QUADCOPTER)
         self.quad = quadcopter.Quadcopter(self.QUADCOPTER, dt=self.QUAD_DYNAMICS_UPDATE, time_scaling=self.TIME_SCALING)
-        self.controller = quad_controller.ManualController(get_state=self.quad.get_state,
-                                                           get_time=self.quad.get_time,
-                                                           actuate_motors=self.quad.set_motor_speeds,
+        self.controller = quad_controller.ManualController(actuate_motors=self.quad.set_motor_speeds,
                                                            quad_identifier=self.quad_id,
                                                            target=self.target,
                                                            update_rate=self.CONTROLLER_DYNAMICS_UPDATE,
@@ -59,9 +56,7 @@ class Quadcopter:
         self.controller.update_throttle(throttle=throttle)
         # Apply throttle
         self.controller.update()
-        time.sleep(0.01)
         # Get new state
         self.quad.update()
-        time.sleep(0.01)
         # Display new state
         self.gui.update()

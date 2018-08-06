@@ -26,7 +26,7 @@ rl = ReinforcementLearning(log)
 utils = GARLUtils(genetic_algorithm=ga, reinforcement_learning=rl)
 
 i = 0
-while i < 10:
+while i < 100:
     print("Iteration {}".format(i))
     quad_sim.apply_throttle(throttle=random.sample(range(4000, 9000), 4))
 
