@@ -1,3 +1,4 @@
+import inspect
 import math
 
 import numpy as np
@@ -19,3 +20,13 @@ def rotation_matrix(angles):
 
 def wrap_angle(val):
     return (val + np.pi) % (2 * np.pi) - np.pi
+
+
+def quad_logger(log_data: str):
+    frame_records = inspect.stack()[1]
+    calling_module = inspect.getmodulename(frame_records[1])
+
+    if log_data is not None:
+        print("[{}::{}] {}".format(calling_module, inspect.stack()[1][3], log_data))
+    else:
+        print('\n')

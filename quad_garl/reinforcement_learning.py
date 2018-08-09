@@ -9,27 +9,27 @@ class ReinforcementLearning:
         # Logging
         self.log = log
 
-        self.batch_size = 1
-        self.I_size = 6  # type: int
-        self.H_1 = 10  # type: int
-        self.H_2 = 20  # type: int
-        self.H_3 = 50  # type: int
-        self.H_4 = 20  # type: int
-        self.O_size = 4  # type: int
-        self.input_tensor = torch.randn(self.batch_size, self.I_size, dtype=torch.float,
-                                        requires_grad=False)  # type: torch.Tensor
-        self.output_tensor = torch.randn(self.batch_size, self.O_size, dtype=torch.float,
+        self._batch_size = 1
+        self._I_size = 6  # type: int
+        self._H_1 = 10  # type: int
+        self._H_2 = 20  # type: int
+        self._H_3 = 50  # type: int
+        self._H_4 = 20  # type: int
+        self._O_size = 4  # type: int
+        self._input_tensor = torch.randn(self._batch_size, self._I_size, dtype=torch.float,
                                          requires_grad=False)  # type: torch.Tensor
-        self.model = torch.nn.Sequential(
-            torch.nn.Linear(self.I_size, self.H_1),
+        self._output_tensor = torch.randn(self._batch_size, self._O_size, dtype=torch.float,
+                                          requires_grad=False)  # type: torch.Tensor
+        self._model = torch.nn.Sequential(
+            torch.nn.Linear(self._I_size, self._H_1),
             torch.nn.LogSigmoid(),
-            torch.nn.Linear(self.H_1, self.H_2),
+            torch.nn.Linear(self._H_1, self._H_2),
             torch.nn.ReLU(),
-            torch.nn.Linear(self.H_2, self.H_3),
+            torch.nn.Linear(self._H_2, self._H_3),
             torch.nn.LogSigmoid(),
-            torch.nn.Linear(self.H_3, self.H_4),
+            torch.nn.Linear(self._H_3, self._H_4),
             torch.nn.ReLU(),
-            torch.nn.Linear(self.H_4, self.O_size)
+            torch.nn.Linear(self._H_4, self._O_size)
         )  # type: torch.nn.Sequential
         self._reward = 0.0  # type:float
 
@@ -61,10 +61,10 @@ class ReinforcementLearning:
         _tensor.data = torch.from_numpy(_data.astype(np.float32)).data
 
     def get_layer_weight(self, layer_num: int) -> np.array:
-        return self.model[layer_num].weight.data.numpy()
+        return self._model[layer_num].weight.data.numpy()
 
     def set_layer_weight(self, layer_num: int, layer_weights: np.array) -> np.array:
-        self.model[layer_num].weight.data = torch.from_numpy(layer_weights)
+        self._model[layer_num].weight.data = torch.from_numpy(layer_weights)
 
 # if __name__ == '__main__':
 #     rl = ReinforcementLearning()

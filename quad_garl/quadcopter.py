@@ -26,7 +26,8 @@ class Propeller:
 class Quadcopter:
     # State space representation: [x y z x_dot y_dot z_dot theta phi gamma theta_dot phi_dot gamma_dot]
     # From Quadcopter Dynamics, Simulation, and Control by Andrew Gibiansky
-    def __init__(self, quads, gravity=9.81, b=0.0245, dt=0.002, time_scaling=1.0):
+    def __init__(self, quads, log, gravity=9.81, b=0.0245, dt=0.002, time_scaling=1.0):
+        self.log = log
         self.quads = quads
         self.g = gravity
         self.b = b
@@ -84,7 +85,7 @@ class Quadcopter:
         return state_dot
 
     def update(self):
-        print("QUADCOPTER UPDATE")
+        self.log.info("QUADCOPTER UPDATE")
         for key in self.quads:
             self.ode.set_initial_value(self.quads[key]['state'], 0).set_f_params(key)
             self.quads[key]['state'] = self.ode.integrate(self.ode.t + self.dt)
@@ -92,7 +93,7 @@ class Quadcopter:
             self.quads[key]['state'][2] = max(0, self.quads[key]['state'][2])
 
     def set_motor_speeds(self, quad_name, speeds):
-        print("THROTTLE {}".format(speeds))
+        self.log.info("THROTTLE {}".format(speeds))
         self.quads[quad_name]['m1'].set_speed(speeds[0])
         self.quads[quad_name]['m2'].set_speed(speeds[1])
         self.quads[quad_name]['m3'].set_speed(speeds[2])

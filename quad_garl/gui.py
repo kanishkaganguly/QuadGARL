@@ -7,9 +7,10 @@ import numpy as np
 from quad_garl.quad_utils import rotation_matrix
 
 
-class GUI():
+class GUI:
     # 'quad_list' is a dictionary of format: quad_list = {'quad_1_name':{'position':quad_1_position,'orientation':quad_1_orientation,'arm_span':quad_1_arm_span}, ...}
-    def __init__(self, quads):
+    def __init__(self, quads, log):
+        self.log = log
         self.quads = quads
         self.fig = plt.figure()
         self.ax = Axes3D.Axes3D(self.fig)
@@ -31,7 +32,7 @@ class GUI():
                                                    antialiased=False)
 
     def update(self):
-        print("GUI UPDATE")
+        self.log.info("GUI UPDATE")
         for key in self.quads:
             R = rotation_matrix(self.quads[key]['state'][6:9])
             L = self.quads[key]['L']
